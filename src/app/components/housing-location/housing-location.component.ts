@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { HousingLocation } from '../../models/housing-location';
 
 @Component({
@@ -9,6 +9,14 @@ import { HousingLocation } from '../../models/housing-location';
   styleUrl: './housing-location.component.scss'
 })
 export class HousingLocationComponent {
+  @Input()
   // ! => no initializer
- @Input() house!: HousingLocation;
+  house!: HousingLocation;
+
+  @Output()
+  someOutput: EventEmitter<HousingLocation> = new EventEmitter();
+
+  triggerOutput(): void {
+    this.someOutput.emit(this.house);
+  }
 }

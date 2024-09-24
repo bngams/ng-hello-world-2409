@@ -28,6 +28,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     console.log('ViewChildren housingLocationComponents from on init', this.housingLocationComponents);
     this.initData();
+    // Or use a more complex/precise mecanism
+    // this.initDataWithSubject
   }
 
   ngAfterViewInit(): void {
@@ -36,6 +38,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   initData(){
     this.housingLocationList = this.housingService.getAllHousingLocations();
+  }
+
+  /**
+   * Use an observable object from service
+   * to handle data and modifications on it
+   */
+  initDataWithSubject() {
+    this.housingService.housingLocationListSubject.subscribe( (data: HousingLocations) => {
+      this.housingLocationList = data
+    })
   }
 
   handleOutput(house: HousingLocation): void {

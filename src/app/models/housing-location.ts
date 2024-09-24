@@ -8,3 +8,6 @@ export type HousingLocation = {
   wifi: boolean;
   laundry: boolean;
 }
+
+// ALIAS
+export type HousingLocations = HousingLocation[];

@@ -14,6 +14,8 @@ import { HousingService } from '../../services/housing.service';
 })
 export class HomeComponent implements OnInit, AfterViewInit {
   housingLocationList!: HousingLocations;
+  // Another DI pattern with inject() function
+  // private housingService: HousingService = inject(HousingService);
 
   // ViewChildren(<selector>)
   @ViewChildren(HousingLocationComponent)
@@ -21,6 +23,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   // DI with constructor (pattern constructor TS portee nom : type )
   constructor(private housingService: HousingService) {
+    // TS Do: this.housingService = housingService;
     console.log('ViewChildren housingLocationComponents from constructor', this.housingLocationComponents);
     // this.initData(); // prefer in ngOnInit (for now seems compliant in constructor but ...)
   }

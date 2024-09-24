@@ -3,31 +3,39 @@ import { HousingLocationComponent } from "../../components/housing-location/hous
 import { HousingLocation, HousingLocations } from '../../models/housing-location';
 import { HOUSING_LOCATION_LIST } from '../../mocks/housing-location.mock';
 import { NgFor } from '@angular/common';
+import { HousingService } from '../../services/housing.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [HousingLocationComponent, NgFor],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit, AfterViewInit {
-  housingLocationList: HousingLocations = HOUSING_LOCATION_LIST;
+  housingLocationList!: HousingLocations;
 
   // ViewChildren(<selector>)
   @ViewChildren(HousingLocationComponent)
   housingLocationComponents!: QueryList<HousingLocationComponent>;
 
-  constructor() {
+  // DI with constructor (pattern constructor TS portee nom : type )
+  constructor(private housingService: HousingService) {
     console.log('ViewChildren housingLocationComponents from constructor', this.housingLocationComponents);
+    // this.initData(); // prefer in ngOnInit (for now seems compliant in constructor but ...)
   }
 
   ngOnInit(): void {
     console.log('ViewChildren housingLocationComponents from on init', this.housingLocationComponents);
+    this.initData();
   }
 
   ngAfterViewInit(): void {
     console.log('ViewChildren housingLocationComponents from on ngAfterViewInit', this.housingLocationComponents);
+  }
+
+  initData(){
+    this.housingLocationList = this.housingService.getAllHousingLocations();
   }
 
   handleOutput(house: HousingLocation): void {

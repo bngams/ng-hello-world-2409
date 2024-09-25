@@ -7,6 +7,6 @@
   />
   <h2 class="listing-heading">{{ house.name }}</h2>
   <p class="listing-location">{{ house.city }}, {{ house.state }}</p>
-  <button type="button" (click)="triggerOutput()">Some Ouput</button>
   <a [routerLink]="['/details', house.id]">Learn More</a>
+  <button type="button" (click)="triggerOutput()">Some Ouput</button>
 </section>

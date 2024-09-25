@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HousingLocation, HousingLocations } from '../models/housing-location';
 import { HOUSING_LOCATION_LIST } from '../mocks/housing-location.mock';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, map, Observable, Subject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,36 @@ export class HousingService {
 
   housingLocationListSubject: Subject<HousingLocations> = new BehaviorSubject(HOUSING_LOCATION_LIST);
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
+
+  /**
+   * Load data in our this.housingLocationList
+   * (like a store)
+   */
+  loadAllHousingLocationsWithAPIDetailedSyntax() {
+    const observer = {
+      next: ((data: any) => this.housingLocationList = data),
+      error: ((error: any) => alert('Error'))
+    };
+    const observable: Observable<Object> = this.http.get(`http://localhost:3000/locations`);
+    observable.subscribe(observer);
+  }
+
+  /**
+   * Load data in our this.housingLocationList
+   * (like a store)
+   * Simple syntax (no unsued variables)
+   */
+  loadAllHousingLocationsWithAPI() {
+    this.http.get<HousingLocations>(`http://localhost:3000/locations`).subscribe({
+      next: ((data: HousingLocations) => this.housingLocationList = data),
+      error: ((error: any) => alert('Error'))
+    });
+  }
+
+  getAllHousingLocationsWithAPI(): Observable<HousingLocations> {
+    return this.http.get<HousingLocations>(`http://localhost:3000/locations`);
+  }
 
   getAllHousingLocations(): HousingLocations {
     return this.housingLocationList;

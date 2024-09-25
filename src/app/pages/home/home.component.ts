@@ -35,7 +35,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     console.log('ViewChildren housingLocationComponents from on init', this.housingLocationComponents);
-    this.initData();
+
+    // Use service mock to load data
+    // this.initData();
+
+    // Or use Http call
+    this.initDataWithAPI();
+
     // Or use a more complex/precise mecanism
     // this.initDataWithSubject
   }
@@ -44,9 +50,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
     console.log('ViewChildren housingLocationComponents from on ngAfterViewInit', this.housingLocationComponents);
   }
 
-  initData(){
+  private initData(): void {
     this.housingLocationList = this.housingService.getAllHousingLocations();
     this.filteredLocationList = this.housingLocationList;
+  }
+
+  private initDataWithAPI(): void {
+    // /!\ we only handle next signals from observable so errors can be handle globally or in interceptor
+    this.housingService.getAllHousingLocationsWithAPI()
+      .subscribe((data: HousingLocations) => {
+        this.housingLocationList = data;
+      })
   }
 
   /**

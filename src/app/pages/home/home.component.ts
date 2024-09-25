@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   // TODO: how to avoid data duplication (filteredLocationList / housingLocationList)
   filteredLocationList!: HousingLocations;
-  
+
   // Another DI pattern with inject() function
   // private housingService: HousingService = inject(HousingService);
 
@@ -72,6 +72,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.filteredLocationList = this.housingLocationList.filter((housingLocation) =>
       housingLocation?.city.toLowerCase().includes(text.toLowerCase()),
     );
+  }
+
+  // TODO: handle submit in a better to avoid page refresh
+  handleSubmit(event: SubmitEvent, text: string) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.filterResults(text);
   }
 
 }

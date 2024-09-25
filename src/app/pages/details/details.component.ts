@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HousingService } from '../../services/housing.service';
 import { HousingLocation } from '../../models/housing-location';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HousingLocationComponent } from "../../components/housing-location/housing-location.component";
 
 @Component({
@@ -22,13 +22,14 @@ export class DetailsComponent implements OnInit {
   /* private */ housingService = inject(HousingService);
   house!: HousingLocation | undefined;
 
-  applyForm = new FormGroup({
-    firstName: new FormControl(''),
-    lastName: new FormControl(''),
-    email: new FormControl(''),
-  });
+  applyForm!: FormGroup;
 
   ngOnInit(): void {
+    this.initForm();
+    this.initData();
+  }
+
+  private initData(): void {
     // /!\ need to cast on exec (TS doesn't rely logic on exec)
     const housingLocationId = Number(this.route.snapshot.params['id']);
     // /!\ how to handle errors ? (for instance redirect...)
@@ -36,18 +37,23 @@ export class DetailsComponent implements OnInit {
     // handle redirect
     if(this.house === undefined) {
       this.router.navigateByUrl('/404')
+    } else {
+      // TODO: how to handle logic if needs house info?
+      // 1) this.initForm(this.house.id)
+      // 2) this.initForm();
+      // 3) if form is initialized...
+      //    this.applyForm.addControl('houseId', new FormControl(this.house.id));
+      // 4)  another component <app-apply-form [houseId]="house.id"></app-apply-form>
     }
-  }
-
-  private initData(): void {
-
   }
 
   private initForm(): void {
     this.applyForm = new FormGroup({
-      firstName: new FormControl(''),
-      lastName: new FormControl(''),
-      email: new FormControl(''),
+      // TODO: how to handle logic if needs house info?
+      // houseId: new FormControl(this.house?.id),
+      firstName: new FormControl('', [Validators.required, Validators.minLength(3)]),
+      lastName: new FormControl('', [Validators.required, Validators.minLength(3)]), // possible with custom validators f()...
+      email: new FormControl('', [Validators.required, Validators.minLength(3), Validators.email]),
     });
   }
 

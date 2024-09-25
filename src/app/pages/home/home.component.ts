@@ -13,7 +13,12 @@ import { HousingService } from '../../services/housing.service';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit, AfterViewInit {
+
   housingLocationList!: HousingLocations;
+
+  // TODO: how to avoid data duplication (filteredLocationList / housingLocationList)
+  filteredLocationList!: HousingLocations;
+  
   // Another DI pattern with inject() function
   // private housingService: HousingService = inject(HousingService);
 
@@ -41,6 +46,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   initData(){
     this.housingLocationList = this.housingService.getAllHousingLocations();
+    this.filteredLocationList = this.housingLocationList;
   }
 
   /**
@@ -50,11 +56,22 @@ export class HomeComponent implements OnInit, AfterViewInit {
   initDataWithSubject() {
     this.housingService.housingLocationListSubject.subscribe( (data: HousingLocations) => {
       this.housingLocationList = data
+      this.filteredLocationList = this.housingLocationList;
     })
   }
 
   handleOutput(house: HousingLocation): void {
     console.log('custom output with ', house)
+  }
+
+  filterResults(text: string) {
+    if (!text) {
+      this.filteredLocationList = this.housingLocationList;
+      return;
+    }
+    this.filteredLocationList = this.housingLocationList.filter((housingLocation) =>
+      housingLocation?.city.toLowerCase().includes(text.toLowerCase()),
+    );
   }
 
 }

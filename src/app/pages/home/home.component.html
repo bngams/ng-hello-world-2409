@@ -1,12 +1,14 @@
 <section>
   <form>
-    <input type="text" placeholder="Filter by city" />
-    <button class="primary" type="button">Search</button>
+    <!-- ngModel ??-->
+    <input type="text" placeholder="Filter by city" #inputSearch />
+    <!-- type="button" => no default HTML submit event on form => /!\ accessibility... -->
+    <button class="primary" type="button" (click)="filterResults(inputSearch.value)">Search</button>
   </form>
 </section>
 <section class="results">
   <app-housing-location
-    *ngFor="let housingLocation of housingLocationList"
+    *ngFor="let housingLocation of filteredLocationList"
     [house]="housingLocation"
     (someOutput)="handleOutput($event)" >
   </app-housing-location>

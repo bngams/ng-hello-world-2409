@@ -1,12 +1,34 @@
-<section class="listing">
+<ng-container *ngIf="displayMode === 'list' else otherTemplate ">
+  <section class="listing">
+    <img
+      class="listing-photo"
+      [src]="house?.photo"
+      alt="Exterior photo of {{ house?.name }}"
+      crossorigin
+    />
+    <h2 class="listing-heading">{{ house?.name }}</h2>
+    <p class="listing-location">{{ house?.city }}, {{ house?.state }}</p>
+    <a [routerLink]="['/details', house?.id]">Learn More</a>
+    <button type="button" (click)="triggerOutput()">Some Ouput</button>
+  </section>
+</ng-container>
+<ng-template #otherTemplate >
   <img
     class="listing-photo"
-    [src]="house.photo"
-    alt="Exterior photo of {{ house.name }}"
+    [src]="house?.photo"
+    alt="Exterior photo of {{ house?.name }}"
     crossorigin
   />
-  <h2 class="listing-heading">{{ house.name }}</h2>
-  <p class="listing-location">{{ house.city }}, {{ house.state }}</p>
-  <a [routerLink]="['/details', house.id]">Learn More</a>
-  <button type="button" (click)="triggerOutput()">Some Ouput</button>
-</section>
+  <section class="listing-description">
+    <h2 class="listing-heading">{{ house?.name }}</h2>
+    <p class="listing-location">{{ house?.city }}, {{ house?.state }}</p>
+  </section>
+  <section class="listing-features">
+    <h2 class="section-heading">About this housing location</h2>
+    <ul>
+      <li>Units available: {{ house?.availableUnits }}</li>
+      <li>Does this location have wifi: {{ house?.wifi }}</li>
+      <li>Does this location have laundry: {{ house?.laundry }}</li>
+    </ul>
+  </section>
+</ng-template>

@@ -29,4 +29,10 @@ export class HousingService {
   addHousingSubject(house: HousingLocation): void {
     this.housingLocationListSubject.next([...this.housingLocationList, house])
   }
+
+  submitApplication(firstName: string, lastName: string, email: string) {
+    console.log(
+      `Homes application received: firstName: ${firstName}, lastName: ${lastName}, email: ${email}.`,
+    );
+  }
 }
